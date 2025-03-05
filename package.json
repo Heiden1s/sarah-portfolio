@@ -1,6 +1,7 @@
 {
   "name": "sarah-portfolio",
   "homepage": "https://heiden1s.github.io/sarah-portfolio",
+
   "version": "0.1.0",
   "main": "index.js",
   "author": "heiden1s <khodabakhsh.hss@gmail.com>",
@@ -12,7 +13,6 @@
     "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.5",
     "web-vitals": "^4.2.4",
     "yarn": "^1.22.22"
   },

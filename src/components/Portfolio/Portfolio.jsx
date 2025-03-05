@@ -11,8 +11,8 @@ const PortfolioItem = ({ category, subCategory, image, onClick, description }) =
   };
 
   const imagePath = subCategory === 'single' 
-    ? `/portfolio-part/${category}/${image}`
-    : `/portfolio-part/${category}/${subCategory}/${image}`;
+    ? `/sarah-portfolio/portfolio-part/${category}/${image}`
+    : `/sarah-portfolio/portfolio-part/${category}/${subCategory}/${image}`;
 
   return (
     <motion.div 
@@ -90,7 +90,7 @@ const Portfolio = () => {
         <div className="text-center mb-10 relative">
           <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2">
             <img 
-              src="./images/decorations/title-decoration.gif" 
+              src="/sarah-portfolio/images/decorations/title-decoration.gif" 
               alt="" 
               className="w-full h-14 object-contain"
             />

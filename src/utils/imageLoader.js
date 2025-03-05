@@ -1,5 +1,5 @@
 export const loadPortfolioImages = async (category, subCategory) => {
-  const basePath = `/portfolio-part/${category}`;
+  const basePath = `/sarah-portfolio/portfolio-part/${category}`;
   
   if (subCategory === 'single') {
     // Return the single images for the category

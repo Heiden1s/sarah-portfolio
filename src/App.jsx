@@ -11,7 +11,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const App = () => {
   return (
     <div className="w-full min-h-screen">
-      <Router basename="/">
+      <Router basename="/sarah-portfolio">
         <Navbar />
         <main className="pt-16"> {/* Padding for fixed navbar */}
           <section id="home" className="min-h-screen bg-main-teal">

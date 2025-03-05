@@ -1,24 +1,25 @@
 import React from 'react';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 const SocialIcon = ({ platform, url }) => {
   const getIconPath = (platform) => {
     switch (platform.toLowerCase()) {
       case 'instagram':
-        return '/images/icons/insta.svg';
+        return getPublicImagePath('images/icons/insta.svg');
       case 'dribbble':
-        return '/images/icons/dribble.svg';
+        return getPublicImagePath('images/icons/dribble.svg');
       case 'telegram':
-        return '/images/icons/telegram.svg';
+        return getPublicImagePath('images/icons/telegram.svg');
       case 'pinterest':
-        return '/images/icons/pinterest.svg';
+        return getPublicImagePath('images/icons/pinterest.svg');
       case 'linkedin':
-        return '/images/icons/linkdin.svg';
+        return getPublicImagePath('images/icons/linkdin.svg');
       case 'behance':
-        return '/images/icons/be.svg';
+        return getPublicImagePath('images/icons/be.svg');
       case 'gmail':
-        return '/images/icons/gmail.svg';
+        return getPublicImagePath('images/icons/gmail.svg');
       case 'phone':
-        return '/images/icons/phone.svg';
+        return getPublicImagePath('images/icons/phone.svg');
       default:
         return null;
     }

@@ -1,8 +1,9 @@
 import React from 'react';
 import Section from '../common/Section';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 const IMAGES = {
-  profile: './images/profile-photo.jpg'
+  profile: getPublicImagePath('images/profile-photo.jpg')
 };
 
 const About = () => {

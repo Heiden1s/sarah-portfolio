@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -143,7 +144,7 @@ const NavLink = ({ href, children, isActive, onClick }) => {
                 transition-colors duration-300 ease-in-out`}
     >
       <img 
-        src={`/images/icons/${href.replace('#', '')}-icon.svg`}
+        src={getPublicImagePath(`images/icons/${href.replace('#', '')}-icon.svg`)}
         alt=""
         className="w-6 h-6 inline-block mr-3"
       />

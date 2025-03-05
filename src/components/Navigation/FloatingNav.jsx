@@ -11,22 +11,22 @@ const FloatingNav = () => {
     { 
       name: 'Home', 
       href: '#home', 
-      icon: '/images/icons/home-icon.svg'
+      icon: '/sarah-portfolio/images/icons/home-icon.svg'
     },
     { 
       name: 'About', 
       href: '#about', 
-      icon: '/images/icons/about-icon.svg'
+      icon: '/sarah-portfolio/images/icons/about-icon.svg'
     },
     { 
       name: 'Portfolio', 
       href: '#portfolio', 
-      icon: '/images/icons/portfolio-icon.svg'
+      icon: '/sarah-portfolio/images/icons/portfolio-icon.svg'
     },
     { 
       name: 'Contact', 
       href: '#contact', 
-      icon: '/images/icons/contact-icon.svg'
+      icon: '/sarah-portfolio/images/icons/contact-icon.svg'
     },
   ];
 

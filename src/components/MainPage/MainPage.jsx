@@ -2,7 +2,6 @@ import React from 'react';
 import Hero from '../Hero/Hero';
 import About from '../About/About';
 import Portfolio from '../Portfolio/Portfolio';
-import PortfolioDetail from '../Portfolio/PortfolioDetail';
 import Contact from '../Contact/Contact';
 import Footer from '../Footer/Footer';
 
@@ -20,10 +19,6 @@ const MainPage = () => {
 
         <section id="portfolio">
           <Portfolio />
-        </section>
-
-        <section id="portfolio-detail">
-          <PortfolioDetail />
         </section>
 
         <section id="contact">

@@ -1,10 +1,10 @@
 import React from 'react';
 
-// Define image paths - these will work even if images don't exist yet
+// Define image paths with the correct prefix
 const IMAGES = {
-  mainCharacter: './images/main-character.png',
-  piano: './images/piano.png',
-  cat: './images/cat.png'
+  mainCharacter: '/sarah-portfolio/images/main-character.png',
+  piano: '/sarah-portfolio/images/piano.png',
+  cat: '/sarah-portfolio/images/cat.png'
 };
 
 const Hero = () => {
