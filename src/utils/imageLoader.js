@@ -1,30 +1,110 @@
+import { getPublicImagePath } from './imageUtils';
+
 export const loadPortfolioImages = async (category, subCategory) => {
-  const basePath = `/sarah-portfolio/portfolio-part/${category}`;
-  
+  // First check if the category exists
+  if (!PORTFOLIO_STRUCTURE[category]) {
+    console.error(`Category ${category} not found`);
+    return { images: [], description: '' };
+  }
+
+  // Handle single images
   if (subCategory === 'single') {
-    // Return the single images for the category
+    const singleImages = PORTFOLIO_STRUCTURE[category].subCategories?.single || [];
     return {
-      images: PORTFOLIO_STRUCTURE[category].subCategories.single.map(
-        image => `${basePath}/${image}`
+      images: singleImages.map(
+        image => getPublicImagePath(`portfolio-part/${category}/${image}`)
       ),
       description: ''
     };
-  } else {
-    // For subcategories, return all images in the subfolder
-    const subCategoryData = PORTFOLIO_STRUCTURE[category].subCategories[subCategory];
-    return {
-      images: subCategoryData.images.map(image => `${basePath}/${subCategory}/${image}`),
-      description: subCategoryData.description || ''
-    };
   }
+
+  // Handle subcategory images
+  const subCategoryData = PORTFOLIO_STRUCTURE[category].subCategories?.[subCategory];
+  if (!subCategoryData) {
+    console.error(`Subcategory ${subCategory} not found in ${category}`);
+    return { images: [], description: '' };
+  }
+
+  return {
+    images: (subCategoryData.images || []).map(
+      image => getPublicImagePath(`portfolio-part/${category}/${subCategory}/${image}`)
+    ),
+    description: subCategoryData.description || ''
+  };
 };
 
-// This is our static structure of the portfolio
-// In a real application, this would come from the server
 export const PORTFOLIO_STRUCTURE = {
   illustration: {
     title: 'Illustration',
     subCategories: {
+      'Long-term model study': {
+        images: [
+          'photo_2025-03-06_01-29-18.jpg',
+          'photo_2023-05-25_20-33-21.jpg',
+          'photo_2023-09-19_22-12-17.jpg',
+          'photo_2023-09-26_00-54-58.jpg'
+        ],
+        description: 'Detailed studies of models over extended periods, focusing on anatomy and form.',
+        coverImage: 'photo_2025-03-06_01-29-18.jpg'
+      },
+      'Quick live model study': {
+        images: [
+          'photo_2023-01-12_16-46-14.jpg',
+          'photo_2025-03-06_01-10-19.jpg',
+          'photo_2025-03-06_01-10-22.jpg',
+          'photo_2025-03-06_01-10-27.jpg',
+          'photo_2025-03-06_01-10-31.jpg',
+          'photo_2025-03-06_01-10-39.jpg',
+          'photo_2025-03-06_01-10-43.jpg',
+          'photo_2025-03-06_01-10-47.jpg',
+          'photo_2025-03-06_01-10-55 (2).jpg',
+          'photo_2025-03-06_01-10-55.jpg'
+        ],
+        description: 'Rapid sketches capturing the essence of live models in short poses.',
+        coverImage: 'photo_2025-03-06_01-10-19.jpg'
+      },
+      'sketchbook pages': {
+        images: [
+          'photo_2025-03-06_01-08-21.jpg',
+          'photo_2025-03-06_01-08-31.jpg',
+          'photo_2025-03-06_01-08-35.jpg',
+          'photo_2025-03-06_01-08-39.jpg',
+          'photo_2025-03-06_01-08-46.jpg',
+          'photo_2025-03-06_01-07-53.jpg',
+          'photo_2025-03-06_01-03-45.jpg',
+          'photo_2025-03-06_01-03-07.jpg',
+          'photo_2024-12-11_16-36-01.jpg',
+          'photo_2024-12-11_16-36-00.jpg',
+          'photo_2024-11-26_14-36-37.jpg',
+          'photo_2025-02-28_20-10-07.jpg',
+          '8.png',
+          '7.png'
+        ],
+        description: 'Personal sketchbook pages showcasing daily drawings and ideas.',
+        coverImage: 'photo_2025-03-06_01-08-21.jpg'
+      },
+      'pixel art': {
+        images: [
+          'darius.jpg',
+          'mujud.jpg',
+          '27yo scientist.gif',
+          'jack and gab.png',
+          'frog tab.gif',
+          '3 no life.png',
+          'cat.gif',
+          'inside job.png'
+        ],
+        description: 'Digital pixel art pieces exploring various themes and characters.',
+        coverImage: 'mujud.jpg'
+      },
+      'The realization': {
+        images: [
+          'the realization 2.JPG',
+          'the realization.JPG'
+        ],
+        description: 'A series exploring moments of clarity and self-discovery.',
+        coverImage: 'the realization.JPG'
+      },
       'cat memes': {
         images: [
           'eepy.PNG',
@@ -36,29 +116,8 @@ export const PORTFOLIO_STRUCTURE = {
           'my life is going to....PNG',
           'cat going insane.PNG'
         ],
-        description: 'A collection of cat-themed illustrations and memes.',
+        description: 'Humorous illustrations featuring cats in various situations.',
         coverImage: 'cat going insane.PNG'
-      },
-      'sketchbook pages': {
-        images: [
-          'photo_2025-02-28_20-10-07.jpg',
-          'image_2025-02-28_20-06-19.png',
-          'image_2025-02-28_20-06-25.png',
-          'image_2025-02-28_20-06-29.png',
-          'image_2025-02-28_20-06-32.png',
-          'image_2025-02-28_20-06-36.png',
-          '5.png',
-          '6.png',
-          '3.png',
-          '4.png',
-          'image_2025-02-28_20-06-54.png',
-          '2.png',
-          '1.png',
-          '8.png',
-          '7.png'
-        ],
-        description: 'Personal sketchbook pages showcasing daily drawings and ideas.',
-        coverImage: '1.png'
       },
       'handprints': {
         images: [
@@ -72,54 +131,26 @@ export const PORTFOLIO_STRUCTURE = {
           'rotten man/sketch.png',
           'rotten man/Drypoint print 2024.png'
         ],
-        description: 'Experimental art series using handprints as a medium, including linocuts and drypoint prints.',
+        description: 'Experimental prints using various techniques including linocuts.',
         coverImage: 'Equality.png'
       },
       'anxiety': {
-        images: ['Doubting anxiety.JPG'],
-        description: `This piece is a visual exploration of anxiety attacks, particularly the
-isolating and overwhelming experience of social anxiety. Using vibrant
-and clashing color palettes, I wanted to depict the chaotic, almost
-surreal mental state that comes with an anxiety attack. The layered use
-of a clipping mask allowed me to show both the hidden and exposed face
-at the same time—representing the paradox of hiding while still feeling
-hyper-visible.
-
-When experiencing anxiety in public, covering your face can feel like
-a desperate attempt to disappear, but instead, it heightens the awareness
-of your emotions. You feel the tension in your hands, the pressure
-in your chest, and the overwhelming disconnect from the world around
-you. Others may not see what you're going through, but inside, the emotions
-are amplified. I wanted to capture that sensation—the feeling of
-being trapped within your own mind, alienated by your own thoughts, yet
-invisible to those around you.
-
-This artwork is my attempt to translate that experience into a visual
-language—one that expresses the weight of anxiety, the intensity of
-internal struggles, and the hope that through art, we can make the
-unseen more understood.`,
+        images: [
+          'Doubting anxiety.JPG'
+        ],
+        description: 'Visual expressions of anxiety and emotional states.',
         coverImage: 'Doubting anxiety.JPG'
       },
-      'pixel art': {
-        images: [
-          'darius.jpg',
-          'mujud.jpg',
-          '27yo scientist.gif'
-        ],
-        description: 'A collection of pixel art pieces, including character designs and animations.',
-        coverImage: 'mujud.jpg'
-      },
       'single': [
-        'IMG_0080.JPG',
-        'the realization 2.JPG',
-        'the realization.JPG',
+        'Star girl.JPG',
         'empty wires.JPG',
         'sword design.PNG',
-        'IMG_1341.JPG',
-        '1. i will create no matter what.JPG',
-        'dnd back.jpg',
-        'DADASHI GUITAR 2.jpg',
-        'Sarah-Gif.gif'
+        'Eating faces.JPG',
+        'i will create no matter what.JPG',
+        'My first d&d character.jpg',
+        'guitar repair poster.jpg',
+        'Confusion.gif',
+        'Girl and the goosae looking swan.jpg'
       ]
     }
   },
@@ -156,7 +187,7 @@ unseen more understood.`,
         'آ و آباد TYPOGRAPHY.jpg',
         'mixing Persian and english letters.jpg',
         'colors look colorful with you!.jpg',
-        'Thesis cover.jpg',
+        'Sonolgy Thesis cover.jpg',
         'PG TAHRIR poster.jpg',
         'VALE LOGO.png'
       ]
@@ -167,35 +198,18 @@ unseen more understood.`,
     subCategories: {
       'azerbaijan 2024': {
         images: [
-          'DSCN9660.JPG',
-          'DSCN9682.JPG',
           'DSCN9721.JPG',
           'DSCN9715.JPG',
           'DSCN9712.JPG',
           'DSCN9696.JPG',
+          'DSCN9682.JPG',
+          'DSCN9660.JPG',
           'DSCN9649.JPG',
           'DSCN9646.JPG',
           'DSCN9640.JPG'
         ],
-        description: 'A photographic journey through Azerbaijan, capturing the landscapes, architecture, and daily life.',
+        description: 'A photographic journey through Azerbaijan landscapes and culture.',
         coverImage: 'DSCN9721.JPG'
-      },
-      'istanbul2023': {
-        images: [
-          'DSCN7230.JPG',
-          'DSCN7430.JPG',
-          'DSCN7427.JPG',
-          'DSCN7313.JPG',
-          'DSCN7180.JPG',
-          'DSCN7154.JPG',
-          'DSCN7135.JPG',
-          'DSCN7132.JPG',
-          'DSCN7119.JPG',
-          'DSCN6985.JPG',
-          'DSCN6874.JPG'
-        ],
-        description: 'Street photography and architectural shots from Istanbul, capturing the city\'s vibrant culture and historic beauty.',
-        coverImage: 'DSCN7430.JPG'
       },
       'water-2023-2025-ONGOING PROJECT': {
         images: [
@@ -222,50 +236,129 @@ unseen more understood.`,
           'DSCN8867.JPG',
           'DSCN8850.JPG'
         ],
-        description: 'An ongoing photographic exploration of water reflections, capturing the mesmerizing transformation of familiar ripples and waves into abstract patterns that blur the line between reality and illusion. This series explores the fluid nature of water and its ability to create surreal, otherworldly compositions through natural distortions of light and form.',
+        description: 'An ongoing exploration of water reflections and patterns.',
         coverImage: 'DSCN8976.JPG'
+      },
+      'Travel photography': {
+        images: [
+          'Untitled-16.jpg',
+          'Untitled-15.jpg',
+          'DSCN9563.JPG',
+          'DSCN9534.JPG',
+          'DSCN8892 - Copy.JPG',
+          'DSCN8891.JPG'
+        ],
+        description: 'Capturing moments and places from various travel destinations.',
+        coverImage: 'Untitled-16.jpg'
+      },
+      'Jewelery photography 2023': {
+        images: [
+          'edited with logo.jpg',
+          'DSCN7818 edited with logo.jpg',
+          'DSCN7743 edited with logo.jpg',
+          'DSCN7731 EDITED WITH LOGO.jpg',
+          'DSCN7696 edited with logo.jpg',
+          'DSCN7665 with WHITE logo.jpg',
+          'DSCN7624 edited with logo.jpg',
+          'DSCN7592 edited with logo.jpg',
+          'DSCN7583.jpg',
+          'DSCN7583 edited with logo.jpg',
+          'DSCN7545 edited with logo.jpg',
+          'DSCN7477 edited with logo.jpg',
+          'DSCN7461 edited with logo.jpg',
+          'DSCN7451 edited with logo.jpg'
+        ],
+        description: 'Professional photography showcasing jewelry pieces.',
+        coverImage: 'DSCN7731 EDITED WITH LOGO.jpg'
+      },
+      'istanbul2023': {
+        images: [
+          'DSCN7430.JPG',
+          'DSCN7427.JPG',
+          'DSCN7313.JPG',
+          'DSCN7230.JPG',
+          'DSCN7180.JPG',
+          'DSCN7154.JPG',
+          'DSCN7135.JPG',
+          'DSCN7132.JPG',
+          'DSCN7119.JPG',
+          'DSCN6985.JPG',
+          'DSCN6874.JPG'
+        ],
+        description: 'Street photography from Istanbul, capturing the city\'s culture and daily life.',
+        coverImage: 'DSCN7430.JPG'
       },
       'branding photography 2022': {
         images: [
-          'DSCN6668.jpg',
-          'DSCN6633 edited low-01.jpg',
           'orange-01.jpg',
-          'DSCN6676 1-01.jpg'
+          'DSCN6676 1-01.jpg',
+          'DSCN6668.jpg',
+          'DSCN6633 edited low-01.jpg'
         ],
-        description: 'Professional branding photography showcasing products and commercial compositions.',
+        description: 'Professional branding and product photography.',
         coverImage: 'DSCN6668.jpg'
       },
-      'single': [
-        'Untitled-16.jpg',
-        'Untitled-15.jpg',
-        'DSCN9563.JPG',
-        'DSCN9534.JPG',
-        'DSCN8892 - Copy.JPG',
-        'DSCN8891.JPG'
-      ]
+      'single': []
     }
   },
   sculpture: {
     title: 'Sculpture',
     subCategories: {
-      'single': [
-        '6.1.png',
-        '6..png',
-        '6.may2024.png',
-        '5.2.png',
-        '5.1.png',
-        '5. summer 2024.png',
-        '5..png',
-        '4..png',
-        '4.January 2024.png',
-        '3..png',
-        '3.png',
-        '2..png',
-        '3.December 2023.png',
-        '2. november 2023.png',
-        '1.first try2.png',
-        '1.First try.png'
-      ]
+      'may 2024': {
+        images: [
+          'doc_2025-03-06_01-41-02-ezgif.com-video-to-gif-converter.gif',
+          'doc_2025-03-06_01-39-34-ezgif.com-video-to-gif-converter.gif',
+          '6.1.png',
+          '6..png',
+          '6.may2024.png'
+        ],
+        description: 'Latest sculptural works featuring dynamic pieces and experimental forms.',
+        coverImage: '6.1.png'
+      },
+      'summer 2024': {
+        images: [
+          '5.2.png',
+          '5.1.png',
+          '5. summer 2024.png',
+          '5..png'
+        ],
+        description: 'Summer collection exploring organic forms and textures.',
+        coverImage: '5.2.png'
+      },
+      'January 2024': {
+        images: [
+          '4..png',
+          '4.January 2024.png'
+        ],
+        description: 'New year explorations in sculptural form.',
+        coverImage: '4.January 2024.png'
+      },
+      'December 2023': {
+        images: [
+          '3..png',
+          '3.png',
+          '3.December 2023.png'
+        ],
+        description: 'End-of-year sculptural series focusing on abstract forms.',
+        coverImage: '3.png'
+      },
+      'November 2023': {
+        images: [
+          '2..png',
+          '2. november 2023.png'
+        ],
+        description: 'Autumn-inspired sculptural works.',
+        coverImage: '2. november 2023.png'
+      },
+      'First try': {
+        images: [
+          '1.first try2.png',
+          '1.First try.png'
+        ],
+        description: 'Initial sculptural experiments exploring form and material.',
+        coverImage: '1.First try.png'
+      },
+      'single': []
     }
   }
 }; 

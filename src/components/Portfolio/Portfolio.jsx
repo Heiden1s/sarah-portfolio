@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Section from '../common/Section';
 import PortfolioDetail from './PortfolioDetail';
 import { PORTFOLIO_STRUCTURE } from '../../utils/imageLoader';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 const PortfolioItem = ({ category, subCategory, image, onClick, description }) => {
   const handleImageError = (e) => {
@@ -11,8 +12,8 @@ const PortfolioItem = ({ category, subCategory, image, onClick, description }) =
   };
 
   const imagePath = subCategory === 'single' 
-    ? `/sarah-portfolio/portfolio-part/${category}/${image}`
-    : `/sarah-portfolio/portfolio-part/${category}/${subCategory}/${image}`;
+    ? getPublicImagePath(`portfolio-part/${category}/${image}`)
+    : getPublicImagePath(`portfolio-part/${category}/${subCategory}/${image}`);
 
   return (
     <motion.div 
@@ -90,7 +91,7 @@ const Portfolio = () => {
         <div className="text-center mb-10 relative">
           <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2">
             <img 
-              src="/sarah-portfolio/images/decorations/title-decoration.gif" 
+              src={getPublicImagePath('images/decorations/title-decoration.gif')}
               alt="" 
               className="w-full h-14 object-contain"
             />

@@ -1,7 +1,9 @@
 export const getPublicImagePath = (path) => {
-  // Remove leading './' if it exists
-  const cleanPath = path.startsWith('./') ? path.slice(2) : path;
-  // Remove leading '/' if it exists
-  const normalizedPath = cleanPath.startsWith('/') ? cleanPath.slice(1) : cleanPath;
-  return `/sarah-portfolio/${normalizedPath}`;
+  // Remove leading './' or '/' if they exist
+  const cleanPath = path.replace(/^[./]+/, '');
+  
+  // For GitHub Pages deployment
+  const prefix = process.env.NODE_ENV === 'production' ? '/sarah-portfolio' : '';
+  
+  return `${prefix}/${cleanPath}`;
 }; 

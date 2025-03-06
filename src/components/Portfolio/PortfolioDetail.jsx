@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { loadPortfolioImages } from '../../utils/imageLoader';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
   const [images, setImages] = useState([]);
@@ -7,6 +9,9 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [projectDescription, setProjectDescription] = useState('');
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
+
+  const THUMBNAILS_TO_SHOW = 5;
 
   useEffect(() => {
     const loadImages = async () => {
@@ -16,9 +21,10 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
         setProjectDescription(description);
         
         if (initialImage) {
-          const index = loadedImages.findIndex(path => path.endsWith(initialImage));
+          const index = loadedImages.findIndex(path => path.includes(initialImage));
           if (index !== -1) {
             setCurrentSlide(index);
+            setStartIndex(Math.max(0, Math.min(index - Math.floor(THUMBNAILS_TO_SHOW / 2), loadedImages.length - THUMBNAILS_TO_SHOW)));
           }
         }
       }
@@ -31,6 +37,14 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide(newIndex);
+    
+    // Adjust thumbnail view to keep current slide in view
+    if (newIndex < startIndex) {
+      setStartIndex(newIndex);
+    } else if (newIndex >= startIndex + THUMBNAILS_TO_SHOW) {
+      setStartIndex(Math.min(newIndex - THUMBNAILS_TO_SHOW + 1, images.length - THUMBNAILS_TO_SHOW));
+    }
+    
     setTimeout(() => setIsAnimating(false), 800);
   };
 
@@ -44,6 +58,18 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
     if (images.length <= 1) return;
     const newIndex = (currentSlide - 1 + images.length) % images.length;
     handleSlideChange(newIndex);
+  };
+
+  const nextThumbnails = () => {
+    if (startIndex + THUMBNAILS_TO_SHOW < images.length) {
+      setStartIndex(prev => Math.min(prev + 1, images.length - THUMBNAILS_TO_SHOW));
+    }
+  };
+
+  const prevThumbnails = () => {
+    if (startIndex > 0) {
+      setStartIndex(prev => prev - 1);
+    }
   };
 
   const handleImageError = (e) => {
@@ -66,12 +92,11 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
     return null;
   }
 
+  const visibleThumbnails = images.slice(startIndex, startIndex + THUMBNAILS_TO_SHOW);
+
   return (
     <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 md:p-8">
-      <div 
-        className="absolute inset-0 bg-transparent"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-transparent" onClick={onClose} />
       
       {/* Full Screen Preview */}
       {isFullScreen && (
@@ -107,20 +132,22 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
         </button>
 
         <div className="flex flex-col md:flex-row h-full">
-          {/* Image Section */}
-          <div className="relative flex-grow">
-            <div className="relative aspect-[4/3] md:aspect-auto md:h-[80vh]">
-              {/* Current Slide */}
+          {/* Main Content Area */}
+          <div className="relative flex-grow flex flex-col">
+            {/* Main Image Section */}
+            <div className="relative aspect-[4/3] md:aspect-auto md:h-[70vh] bg-black/30">
               <div className="absolute inset-0 flex items-center justify-center p-4">
                 <div className="relative group w-full h-full flex items-center justify-center">
-                  <img
+                  <motion.img
+                    key={currentSlide}
                     src={images[currentSlide]}
                     alt=""
-                    className="max-w-full max-h-full object-contain transition-all duration-800"
-                    style={{ opacity: isAnimating ? 0.5 : 1 }}
+                    className="max-w-full max-h-full object-contain"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                     onError={handleImageError}
                   />
-                  {/* Full Screen Button - Now on the left */}
                   <button
                     onClick={() => setIsFullScreen(true)}
                     className="absolute left-4 top-4 bg-black/50 p-2 rounded-full text-white/70 
@@ -128,12 +155,8 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
                              hover:text-white transform hover:scale-110"
                   >
                     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M15 3h6m0 0v6m0-6L14 10M9 21H3m0 0v-6m0 6l7-7m4-10l7 7m0 4l-7 7m-4-7l7-7"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                            d="M15 3h6m0 0v6m0-6L14 10M9 21H3m0 0v-6m0 6l7-7m4-10l7 7m0 4l-7 7m-4-7l7-7" />
                     </svg>
                   </button>
                 </div>
@@ -166,28 +189,66 @@ const PortfolioDetail = ({ category, subCategory, initialImage, onClose }) => {
               )}
             </div>
 
-            {/* Thumbnails */}
+            {/* Thumbnails Section */}
             {images.length > 1 && (
-              <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2">
-                <div className="flex justify-center gap-2 overflow-x-auto py-2 px-4 custom-scrollbar">
-                  {images.map((image, index) => (
+              <div className="relative bg-black/50 p-4">
+                <div className="flex items-center justify-center">
+                  {/* Thumbnail Navigation */}
+                  {startIndex > 0 && (
                     <button
-                      key={index}
-                      onClick={() => handleSlideChange(index)}
-                      className={`w-16 h-16 flex-shrink-0 rounded overflow-hidden transition-all duration-500
-                                transform hover:scale-105
-                                ${currentSlide === index 
-                                  ? 'ring-2 ring-main-teal scale-110' 
-                                  : 'opacity-50 hover:opacity-75'}`}
+                      onClick={prevThumbnails}
+                      className="absolute left-2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center
+                               text-white/70 hover:text-white transition-all duration-300 hover:bg-black/70"
                     >
-                      <img
-                        src={image}
-                        alt=""
-                        className="w-full h-full object-cover"
-                        onError={handleImageError}
-                      />
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
                     </button>
-                  ))}
+                  )}
+
+                  {/* Thumbnails Container */}
+                  <motion.div 
+                    className="flex gap-2 overflow-hidden"
+                    style={{ width: `${THUMBNAILS_TO_SHOW * 80}px` }}
+                  >
+                    <motion.div
+                      className="flex gap-2"
+                      initial={false}
+                      animate={{ x: -startIndex * 80 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    >
+                      {images.map((image, index) => (
+                        <motion.button
+                          key={index}
+                          onClick={() => handleSlideChange(index)}
+                          className={`w-[72px] h-[72px] flex-shrink-0 rounded overflow-hidden transition-all duration-300
+                                    ${currentSlide === index 
+                                      ? 'ring-2 ring-main-teal scale-105' 
+                                      : 'opacity-50 hover:opacity-75'}`}
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <img
+                            src={image}
+                            alt=""
+                            className="w-full h-full object-cover"
+                            onError={handleImageError}
+                          />
+                        </motion.button>
+                      ))}
+                    </motion.div>
+                  </motion.div>
+
+                  {startIndex + THUMBNAILS_TO_SHOW < images.length && (
+                    <button
+                      onClick={nextThumbnails}
+                      className="absolute right-2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center
+                               text-white/70 hover:text-white transition-all duration-300 hover:bg-black/70"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               </div>
             )}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CustomNavIcon from './CustomNavIcon';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 const FloatingNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,22 +12,22 @@ const FloatingNav = () => {
     { 
       name: 'Home', 
       href: '#home', 
-      icon: '/sarah-portfolio/images/icons/home-icon.svg'
+      icon: getPublicImagePath('images/icons/home-icon.svg')
     },
     { 
       name: 'About', 
       href: '#about', 
-      icon: '/sarah-portfolio/images/icons/about-icon.svg'
+      icon: getPublicImagePath('images/icons/about-icon.svg')
     },
     { 
       name: 'Portfolio', 
       href: '#portfolio', 
-      icon: '/sarah-portfolio/images/icons/portfolio-icon.svg'
+      icon: getPublicImagePath('images/icons/portfolio-icon.svg')
     },
     { 
       name: 'Contact', 
       href: '#contact', 
-      icon: '/sarah-portfolio/images/icons/contact-icon.svg'
+      icon: getPublicImagePath('images/icons/contact-icon.svg')
     },
   ];
 
@@ -103,10 +104,10 @@ const FloatingNav = () => {
             exit="exit"
             variants={buttonVariants}
             onClick={() => setIsOpen(!isOpen)}
-            className="w-16 h-16 sm:w-20 sm:h-20 bg-main-teal rounded-full flex items-center justify-center 
+            className="w-20 h-20 sm:w-24 sm:h-24 bg-main-teal rounded-full flex items-center justify-center 
                      shadow-lg hover:bg-teal-dark transition-colors duration-300"
           >
-            <div className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] flex items-center justify-center">
+            <div className="w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] flex items-center justify-center">
               <CustomNavIcon isOpen={isOpen} />
             </div>
           </motion.button>
@@ -131,7 +132,7 @@ const FloatingNav = () => {
                              min-w-[140px] sm:min-w-[160px] text-sm sm:text-base
                              justify-center font-handwriting"
                   >
-                    <div className="w-[37px] h-[37px] sm:w-[41px] sm:h-[41px] flex items-center justify-center">
+                    <div className="w-[45px] h-[45px] sm:w-[50px] sm:h-[50px] flex items-center justify-center">
                       <img 
                         src={item.icon}
                         alt=""

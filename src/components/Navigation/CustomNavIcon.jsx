@@ -1,9 +1,14 @@
+import { getPublicImagePath } from '../../utils/imageUtils';
+
 const CustomNavIcon = ({ isOpen }) => {
   return (
     <img 
-      src={isOpen ? '/sarah-portfolio/images/icons/close-icon.svg' : '/sarah-portfolio/images/icons/menu-icon.svg'}
+      src={isOpen 
+        ? getPublicImagePath('images/icons/close-icon.svg')
+        : getPublicImagePath('images/icons/menu-icon.svg')
+      }
       alt={isOpen ? 'Close menu' : 'Open menu'}
-      className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 
+      className={`w-12 h-12 sm:w-14 sm:h-14 transition-transform duration-300 
                 ${isOpen ? 'rotate-180' : ''}`}
     />
   );

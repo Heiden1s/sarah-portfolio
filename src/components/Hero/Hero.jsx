@@ -1,10 +1,11 @@
 import React from 'react';
+import { getPublicImagePath } from '../../utils/imageUtils';
 
 // Define image paths with the correct prefix
 const IMAGES = {
-  mainCharacter: '/sarah-portfolio/images/main-character.png',
-  piano: '/sarah-portfolio/images/piano.png',
-  cat: '/sarah-portfolio/images/cat.png'
+  mainCharacter: getPublicImagePath('images/main-character.png'),
+  piano: getPublicImagePath('images/piano.png'),
+  cat: getPublicImagePath('images/cat.png')
 };
 
 const Hero = () => {

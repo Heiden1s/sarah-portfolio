@@ -146,7 +146,7 @@ const NavLink = ({ href, children, isActive, onClick }) => {
       <img 
         src={getPublicImagePath(`images/icons/${href.replace('#', '')}-icon.svg`)}
         alt=""
-        className="w-6 h-6 inline-block mr-3"
+        className="w-8 h-8 sm:w-10 sm:h-10 inline-block mr-3"
       />
       {children}
     </a>
