@@ -25,6 +25,12 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Copy Additional Files
+        run: |
+          [ -f public/CNAME ] && cp public/CNAME build/ || echo "No CNAME file"
+          [ -d public/images ] && cp -r public/images build/ || echo "No images directory"
+          [ -f public/OverpassMono-VariableFont_wght.ttf ] && cp public/OverpassMono-VariableFont_wght.ttf build/ || echo "No font file"
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
