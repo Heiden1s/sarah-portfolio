@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'Overpass Mono';
+  src: url('./fonts/OverpassMono-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900; /* Variable font weight range */
+  font-style: normal;
+  font-display: swap; /* For better performance */
+}
+
+/* Then you can use it anywhere in your styles */
+body {
+  font-family: 'Overpass Mono', monospace;
+}
