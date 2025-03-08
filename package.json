@@ -35,7 +35,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp public/CNAME build/ && (test -d public/images && cp -r public/images build/ || true)",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
