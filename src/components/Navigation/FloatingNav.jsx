@@ -7,6 +7,7 @@ const FloatingNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [shouldShow, setShouldShow] = useState(true);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   const navItems = [
     { 
@@ -31,22 +32,43 @@ const FloatingNav = () => {
     },
   ];
 
+  // Check device size on mount and resize
+  useEffect(() => {
+    const checkDeviceSize = () => {
+      setIsMobileOrTablet(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkDeviceSize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkDeviceSize);
+    
+    return () => window.removeEventListener('resize', checkDeviceSize);
+  }, []);
+
+  // Control nav visibility based on scroll
   useEffect(() => {
     const controlNavbar = () => {
       if (window.scrollY > lastScrollY && isOpen) {
+        // Close menu when scrolling down
         setIsOpen(false);
       }
-      if (window.scrollY > 200) {
+      
+      if (isMobileOrTablet) {
+        // Always show on mobile/tablet regardless of scroll position
         setShouldShow(true);
       } else {
-        setShouldShow(false);
+        // For desktop, only show when scrolled down
+        setShouldShow(window.scrollY > 200);
       }
+      
       setLastScrollY(window.scrollY);
     };
 
     window.addEventListener('scroll', controlNavbar);
     return () => window.removeEventListener('scroll', controlNavbar);
-  }, [lastScrollY, isOpen]);
+  }, [lastScrollY, isOpen, isMobileOrTablet]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId.replace('#', ''));
@@ -104,10 +126,10 @@ const FloatingNav = () => {
             exit="exit"
             variants={buttonVariants}
             onClick={() => setIsOpen(!isOpen)}
-            className="w-20 h-20 sm:w-24 sm:h-24 bg-main-teal rounded-full flex items-center justify-center 
+            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-main-teal rounded-full flex items-center justify-center 
                      shadow-lg hover:bg-teal-dark transition-colors duration-300"
           >
-            <div className="w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] flex items-center justify-center">
+            <div className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[70px] md:h-[70px] flex items-center justify-center">
               <CustomNavIcon isOpen={isOpen} />
             </div>
           </motion.button>
