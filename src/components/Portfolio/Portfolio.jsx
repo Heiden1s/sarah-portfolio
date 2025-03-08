@@ -71,7 +71,7 @@ const PortfolioItem = ({ category, subCategory, image, onClick, description }) =
         whileHover={{ y: -2 }}
         transition={{ duration: 0.3 }}
       >
-        <h3 className="text-white font-handwriting text-lg px-4 py-2">
+        <h3 className="text-white text-lg px-4 py-2">
           {subCategory === 'single' ? image.split('.')[0] : subCategory}
         </h3>
       </motion.div>
@@ -139,7 +139,7 @@ const Portfolio = () => {
               className="w-full h-14 object-contain"
             />
           </div>
-          <h2 className="text-white text-3xl font-handwriting relative z-10">
+          <h2 className="text-white text-3xl relative z-10">
             Portfolio
           </h2>
         </motion.div>
@@ -155,7 +155,7 @@ const Portfolio = () => {
             <motion.button
               key={key}
               onClick={() => handleCategoryClick(key)}
-              className={`px-6 py-2 rounded-full font-handwriting text-lg transition-colors duration-300
+              className={`px-6 py-2 rounded-full text-lg transition-colors duration-300
                 ${selectedCategory === key 
                   ? 'bg-main-teal text-white' 
                   : 'bg-nav-gray/50 text-white hover:bg-main-teal/70'}`}

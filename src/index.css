@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Set Overpass Mono as the default font for the entire site */
+@layer base {
+  html, body {
+    font-family: 'Overpass Mono', monospace;
+  }
+}
+
 /* Set the Overpass Mono font as the default monospace font */
 code, pre, .font-mono, .mono {
   font-family: 'Overpass Mono', monospace !important;

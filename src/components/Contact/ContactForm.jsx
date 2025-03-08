@@ -85,7 +85,7 @@ const ContactForm = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Name Input */}
         <div>
-          <label htmlFor="name" className="block text-white font-handwriting mb-2">
+          <label htmlFor="name" className="block text-white mb-2">
             Name
           </label>
           <input
@@ -103,7 +103,7 @@ const ContactForm = () => {
 
         {/* Email Input */}
         <div>
-          <label htmlFor="email" className="block text-white font-handwriting mb-2">
+          <label htmlFor="email" className="block text-white mb-2">
             Email
           </label>
           <input
@@ -122,7 +122,7 @@ const ContactForm = () => {
 
       {/* Message Input */}
       <div>
-        <label htmlFor="message" className="block text-white font-handwriting mb-2">
+        <label htmlFor="message" className="block text-white mb-2">
           Message
         </label>
         <textarea
@@ -142,7 +142,7 @@ const ContactForm = () => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full md:w-auto px-8 py-3 bg-main-teal text-white font-handwriting rounded-full
+        className="w-full md:w-auto px-8 py-3 bg-main-teal text-white rounded-full
                  hover:bg-teal-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? 'Sending...' : 'Send Message'}

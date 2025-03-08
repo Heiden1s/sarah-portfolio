@@ -9,7 +9,7 @@ const Header = () => {
       <div className="max-w-[90%] mx-auto">
         <nav className="flex justify-between items-center">
           {/* Logo */}
-          <a href="#home" className="text-white font-handwriting text-2xl py-4">
+          <a href="#home" className="text-white text-2xl py-4">
             Sarah Jafari.art
           </a>
 

@@ -12,11 +12,11 @@ const SectionTitle = ({ title, subtitle }) => {
                 style={{ clipPath: 'circle(50% at right)' }} />
           </div>
         </div>
-        <span className="text-main-teal text-2xl font-handwriting relative z-10 bg-main-teal px-4">
+        <span className="text-main-teal text-2xl relative z-10 bg-main-teal px-4">
           {title}
         </span>
       </div>
-      <h2 className="text-white text-3xl font-handwriting mt-2">
+      <h2 className="text-white text-3xl mt-2">
         {subtitle}
       </h2>
     </div>
