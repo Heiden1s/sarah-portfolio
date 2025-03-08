@@ -25,11 +25,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Copy Additional Files
-        run: |
-          [ -f public/CNAME ] && cp public/CNAME build/ || echo "No CNAME file"
-          [ -d public/images ] && cp -r public/images build/ || echo "No images directory"
-
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
