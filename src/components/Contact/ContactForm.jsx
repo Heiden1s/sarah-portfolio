@@ -4,7 +4,8 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    subject: 'Portfolio Contact Form' // Adding a default subject
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
@@ -22,17 +23,36 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Here you would typically send the email
-      // For now, we'll just simulate a delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Use Web3Forms API
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: '36c1ca58-cfb8-4dfa-af1b-70b56f033098',
+          ...formData,
+          from_name: formData.name,
+          subject: `New message from ${formData.name} - Portfolio Contact Form`,
+          botcheck: false, // Required for the spam filter
+        })
+      });
       
-      // Reset form and show success message
-      setFormData({ name: '', email: '', message: '' });
-      setSubmitStatus('success');
+      const result = await response.json();
       
-      // Clear success message after 5 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
+      if (result.success) {
+        // Reset form and show success message
+        setFormData({ name: '', email: '', message: '', subject: 'Portfolio Contact Form' });
+        setSubmitStatus('success');
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
     } catch (error) {
+      console.error('Form submission error:', error);
       setSubmitStatus('error');
       
       // Clear error message after 5 seconds
@@ -111,6 +131,11 @@ const ContactForm = () => {
           placeholder="Write your message here..."
         ></textarea>
       </div>
+
+      {/* Hidden fields for Web3Forms */}
+      <input type="hidden" name="access_key" value="36c1ca58-cfb8-4dfa-af1b-70b56f033098" />
+      <input type="hidden" name="subject" value={`New message from ${formData.name} - Portfolio Contact Form`} />
+      <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
 
       {/* Submit Button */}
       <button
