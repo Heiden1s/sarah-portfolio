@@ -1,7 +1,6 @@
 {
   "name": "sarah-portfolio",
   "homepage": "https://sarahjafari.art",
-
   "version": "0.1.0",
   "main": "index.js",
   "author": "heiden1s <khodabakhsh.hss@gmail.com>",
@@ -13,6 +12,7 @@
     "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-swipeable": "^7.0.2",
     "web-vitals": "^4.2.4",
     "yarn": "^1.22.22"
   },
@@ -32,7 +32,7 @@
     "tailwindcss": "3"
   },
   "scripts": {
-  "predeploy": "yarn build",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
