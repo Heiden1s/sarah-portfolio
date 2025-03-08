@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Section from '../common/Section';
 import { getPublicImagePath } from '../../utils/imageUtils';
 
+// Define a version number for the profile image - update this when the image changes
+const PROFILE_IMAGE_VERSION = "v2"; // Increment this whenever you update the image
+
 const IMAGES = {
-  profile: getPublicImagePath('images/profile-photo.jpg')
+  // Add the version as a query parameter to force a cache refresh
+  profile: getPublicImagePath(`images/profile-photo.jpg?version=${PROFILE_IMAGE_VERSION}`, false)
 };
 
 const About = () => {

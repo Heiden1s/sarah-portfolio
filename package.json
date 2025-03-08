@@ -29,13 +29,14 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.1",
     "react-scripts": "^5.0.1",
+    "rimraf": "^6.0.1",
     "tailwindcss": "3"
   },
   "scripts": {
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rimraf build && react-scripts build && (if exist public\\CNAME copy public\\CNAME build\\) && (if exist public\\images xcopy /E /I /Y public\\images build\\images) && (if exist public\\OverpassMono-VariableFont_wght.ttf copy public\\OverpassMono-VariableFont_wght.ttf build\\)",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -48,8 +49,7 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"   
-      
+      "last 1 safari version"
     ]
   }
 }
