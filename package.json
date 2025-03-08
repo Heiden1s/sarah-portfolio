@@ -35,7 +35,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
-    "build": "react-scripts build && cp public/CNAME build/ && (test -d public/images && cp -r public/images build/ || true)",
+    "build": "react-scripts build && (if exist public\\CNAME copy public\\CNAME build\\) && (if exist public\\images xcopy /E /I public\\images build\\images) && (if exist public\\OverpassMono-VariableFont_wght.ttf copy public\\OverpassMono-VariableFont_wght.ttf build\\)",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

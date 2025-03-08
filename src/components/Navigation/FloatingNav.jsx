@@ -7,6 +7,7 @@ const FloatingNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [shouldShow, setShouldShow] = useState(true);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   const navItems = [
     { 
@@ -32,21 +33,40 @@ const FloatingNav = () => {
   ];
 
   useEffect(() => {
+    // Check if device is mobile or tablet
+    const checkDeviceSize = () => {
+      setIsMobileOrTablet(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkDeviceSize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkDeviceSize);
+    
+    return () => window.removeEventListener('resize', checkDeviceSize);
+  }, []);
+
+  useEffect(() => {
     const controlNavbar = () => {
       if (window.scrollY > lastScrollY && isOpen) {
         setIsOpen(false);
       }
-      if (window.scrollY > 200) {
-        setShouldShow(true);
+      
+      // Only hide floating nav on desktop when scrolled to top
+      if (isMobileOrTablet) {
+        setShouldShow(true); // Always show on mobile/tablet
       } else {
-        setShouldShow(false);
+        // For desktop, show when scrolled down
+        setShouldShow(window.scrollY > 200);
       }
+      
       setLastScrollY(window.scrollY);
     };
 
     window.addEventListener('scroll', controlNavbar);
     return () => window.removeEventListener('scroll', controlNavbar);
-  }, [lastScrollY, isOpen]);
+  }, [lastScrollY, isOpen, isMobileOrTablet]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId.replace('#', ''));
@@ -104,10 +124,10 @@ const FloatingNav = () => {
             exit="exit"
             variants={buttonVariants}
             onClick={() => setIsOpen(!isOpen)}
-            className="w-20 h-20 sm:w-24 sm:h-24 bg-main-teal rounded-full flex items-center justify-center 
+            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-main-teal rounded-full flex items-center justify-center 
                      shadow-lg hover:bg-teal-dark transition-colors duration-300"
           >
-            <div className="w-[60px] h-[60px] sm:w-[70px] sm:h-[70px] flex items-center justify-center">
+            <div className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] md:w-[70px] md:h-[70px] flex items-center justify-center">
               <CustomNavIcon isOpen={isOpen} />
             </div>
           </motion.button>
@@ -127,12 +147,12 @@ const FloatingNav = () => {
                     key={item.name}
                     variants={itemVariants}
                     onClick={() => scrollToSection(item.href)}
-                    className="bg-nav-gray hover:bg-main-teal text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full
+                    className="bg-nav-gray hover:bg-main-teal text-white px-3 sm:px-4 md:px-5 py-2 rounded-full
                              flex items-center gap-2 sm:gap-3 transition-colors duration-300 
-                             min-w-[140px] sm:min-w-[160px] text-sm sm:text-base
-                             justify-center font-handwriting"
+                             min-w-[120px] sm:min-w-[140px] md:min-w-[160px] text-xs sm:text-sm md:text-base
+                             justify-center font-mono"
                   >
-                    <div className="w-[45px] h-[45px] sm:w-[50px] sm:h-[50px] flex items-center justify-center">
+                    <div className="w-[35px] h-[35px] sm:w-[40px] sm:h-[40px] md:w-[50px] md:h-[50px] flex items-center justify-center">
                       <img 
                         src={item.icon}
                         alt=""

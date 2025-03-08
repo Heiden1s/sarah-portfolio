@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Set the Overpass Mono font as the default monospace font */
+code, pre, .font-mono, .mono {
+  font-family: 'Overpass Mono', monospace !important;
+}
+
+:root {
+  --font-mono: 'Overpass Mono', monospace;
+}
+
 /* Base scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;

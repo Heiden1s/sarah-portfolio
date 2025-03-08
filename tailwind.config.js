@@ -14,6 +14,7 @@ module.exports = {
       },
       fontFamily: {
         'handwriting': ['Indie Flower', 'cursive'],
+        'mono': ['Overpass Mono', 'monospace'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
